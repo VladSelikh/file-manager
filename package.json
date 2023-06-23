@@ -4,7 +4,7 @@
   "description": "Simple file mamager on NodeJS",
   "main": "index.js",
   "scripts": {
-    "test": "start"
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
