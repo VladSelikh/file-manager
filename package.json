@@ -1,0 +1,24 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "Simple file mamager on NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladSelikh/file-manager.git"
+  },
+  "keywords": [
+    "modules",
+    "files",
+    "list"
+  ],
+  "author": "VladSelikh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladSelikh/file-manager/issues"
+  },
+  "homepage": "https://github.com/VladSelikh/file-manager#readme"
+}
