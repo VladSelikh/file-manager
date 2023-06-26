@@ -17,5 +17,6 @@ export const read = (pathToFile) => {
     })
     .on("error", (error) => {
       process.stdout.write(`${operationFailedMessage}: ${error.message}`);
+      process.stdout.write(currentDirectoryMessage(process.env.entry));
     });
 };

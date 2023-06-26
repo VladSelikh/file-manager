@@ -1,26 +1,32 @@
+import { createBrotliDecompress } from "zlib";
 import { resolve, basename } from "path";
 import { createReadStream, createWriteStream } from "node:fs";
-import { unlink } from "node:fs/promises";
 import {
   currentDirectoryMessage,
   operationFailedMessage,
 } from "../constants/constants.js";
 
-export const move = (pathToFile, newDirPath) => {
-  const fullFilePath = resolve(process.env.entry, pathToFile);
-  const fileName = basename(fullFilePath);
+export const decompress = (pathToFile, pathToDestinationFolder) => {
+  const fileName = resolve(process.env.entry, pathToFile);
+  const destinationFileName = resolve(
+    process.env.entry,
+    pathToDestinationFolder,
+    basename(fileName).replace(".br", "")
+  );
 
-  const fullNewFilePath = resolve(process.env.entry, newDirPath, fileName);
+  const brotli = createBrotliDecompress();
 
-  createReadStream(fullFilePath)
-    .on("close", async () => {
-      await unlink(fullFilePath);
-    })
+  createReadStream(fileName)
     .on("error", (error) => {
       process.stdout.write(`${operationFailedMessage}: ${error.message}`);
       process.stdout.write(currentDirectoryMessage(process.env.entry));
     })
-    .pipe(createWriteStream(fullNewFilePath))
+    .pipe(brotli)
+    .on("error", (error) => {
+      process.stdout.write(`${operationFailedMessage}: ${error.message}`);
+      process.stdout.write(currentDirectoryMessage(process.env.entry));
+    })
+    .pipe(createWriteStream(destinationFileName))
     .on("close", () => {
       process.stdout.write(currentDirectoryMessage(process.env.entry));
     })

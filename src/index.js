@@ -18,6 +18,9 @@ import { createHash } from "./helpers/createHash.js";
 import { copy } from "./helpers/copyFile.js";
 import { move } from "./helpers/moveFile.js";
 import { remove } from "./helpers/deleteFile.js";
+import { compress } from "./helpers/compressFile.js";
+import { decompress } from "./helpers/decompressFile.js";
+import { getOSInfo } from "./helpers/os.js";
 
 let userName = defaultUserName;
 process.env.entry = homedir();
@@ -65,9 +68,6 @@ rl.on("line", async (input) => {
     case commandsList.rn:
       await rename(...input.replace(`${commandSpecified} `, "").split(" "));
       break;
-    case commandsList.hash:
-      await createHash(input.replace(`${commandSpecified} `, ""));
-      break;
     case commandsList.cp:
       copy(...input.replace(`${commandSpecified} `, "").split(" "));
       break;
@@ -77,8 +77,21 @@ rl.on("line", async (input) => {
     case commandsList.rm:
       await remove(input.replace(`${commandSpecified} `, ""));
       break;
+    case commandsList.hash:
+      await createHash(input.replace(`${commandSpecified} `, ""));
+      break;
+    case commandsList.os:
+      getOSInfo(input.replace(commandSpecified, ""));
+      break;
+    case commandsList.compress:
+      compress(...input.replace(`${commandSpecified} `, "").split(" "));
+      break;
+    case commandsList.decompress:
+      decompress(...input.replace(`${commandSpecified} `, "").split(" "));
+      break;
     default:
       process.stdout.write(`${EOL}Invalid input${EOL}`);
+      process.stdout.write(currentDirectoryMessage(process.env.entry));
   }
 
   if (
@@ -90,6 +103,7 @@ rl.on("line", async (input) => {
       commandsList.rn,
       commandsList.rm,
       commandsList.hash,
+      commandsList.os,
     ].includes(commandSpecified)
   ) {
     process.stdout.write(currentDirectoryMessage(process.env.entry));

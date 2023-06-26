@@ -14,6 +14,7 @@ export const copy = (pathToFile, newDirPath) => {
   createReadStream(fullFilePath)
     .on("error", (error) => {
       process.stdout.write(`${operationFailedMessage}: ${error.message}`);
+      process.stdout.write(currentDirectoryMessage(process.env.entry));
     })
     .pipe(createWriteStream(fullNewFilePath))
     .on("close", () => {
@@ -21,5 +22,6 @@ export const copy = (pathToFile, newDirPath) => {
     })
     .on("error", (error) => {
       process.stdout.write(`${operationFailedMessage}: ${error.message}`);
+      process.stdout.write(currentDirectoryMessage(process.env.entry));
     });
 };

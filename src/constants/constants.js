@@ -23,6 +23,9 @@ const commandsList = {
   cp: "cp",
   mv: "mv",
   rm: "rm",
+  compress: "compress",
+  decompress: "decompress",
+  os: "os --"
 };
 
 const operationFailedMessage = "Operation failed";
