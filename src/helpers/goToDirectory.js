@@ -11,6 +11,7 @@ export const goToDirectory = async (dirName) => {
       process.env.entry = fullDirectoryPath;
     } else throw new Error("Specified path is a file, not a directory.");
   } catch (e) {
+    // ToDo: leave operationFailedMessage only
     process.stdout.write(`${operationFailedMessage}: ${e.message}`);
   }
 };

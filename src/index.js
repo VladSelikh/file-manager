@@ -6,10 +6,14 @@ import {
   welcomeMessage,
   goodbyeMessage,
   commandsList,
+  currentDirectoryMessage,
 } from "./constants/constants.js";
 import { printDirContent } from "./helpers/printDirContent.js";
 import { goUp } from "./helpers/goUp.js";
 import { goToDirectory } from "./helpers/goToDirectory.js";
+import { read } from "./helpers/readFile.js";
+import { create } from "./helpers/createFile.js";
+import { rename } from "./helpers/renameFile.js";
 
 let userName = defaultUserName;
 process.env.entry = homedir();
@@ -35,6 +39,7 @@ rl.on("line", async (input) => {
   );
 
   switch (commandSpecified) {
+    // ToDo: parse command line string, especially rn
     case commandsList.exit:
       rl.close();
       process.exit();
@@ -45,14 +50,32 @@ rl.on("line", async (input) => {
       goUp();
       break;
     case commandsList.cd:
-      await goToDirectory(input.replace(`${commandsList.cd} `, ""));
+      await goToDirectory(input.replace(`${commandSpecified} `, ""));
+      break;
+    case commandsList.cat:
+      read(input.replace(`${commandSpecified} `, ""));
+      break;
+    case commandsList.add:
+      await create(input.replace(`${commandSpecified} `, ""));
+      break;
+    case commandsList.rn:
+      await rename(...input.replace(`${commandSpecified} `, "").split(" "));
       break;
     default:
-      process.stdout.write("Invalid input");
+      process.stdout.write(`${EOL}Invalid input${EOL}`);
   }
-  process.stdout.write(EOL);
-  process.stdout.write(`You currently in ${process.env.entry}`);
-  process.stdout.write(EOL);
+
+  if (
+    [
+      commandsList.cd,
+      commandsList.ls,
+      commandsList.up,
+      commandsList.add,
+      commandsList.rn,
+    ].includes(commandSpecified)
+  ) {
+    process.stdout.write(currentDirectoryMessage(process.env.entry));
+  }
 });
 
 rl.on("close", () => {
@@ -60,5 +83,5 @@ rl.on("close", () => {
 });
 
 rl.on("error", (error) => {
-  console.log(error);
+  process.stdout.write(error.message);
 });

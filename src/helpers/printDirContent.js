@@ -30,6 +30,7 @@ export const printDirContent = async () => {
 
     console.table(sortedDirectoriesList.concat(sortedFilesList));
   } catch (e) {
+    // ToDo: leave operationFailedMessage only
     process.stdout.write(`${operationFailedMessage}: ${e.message}`);
   }
 };
