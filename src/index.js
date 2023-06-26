@@ -8,6 +8,7 @@ import {
   commandsList,
 } from "./constants/constants.js";
 import { printDirContent } from "./helpers/printDirContent.js";
+import { goUp } from "./helpers/goUp.js";
 
 let userName = defaultUserName;
 let entryPoint = homedir();
@@ -39,6 +40,9 @@ rl.on("line", async (input) => {
     case commandsList.ls:
       await printDirContent(entryPoint);
       break;
+    case commandsList.up:
+      entryPoint = goUp(entryPoint);
+      break;
     default:
       process.stdout.write("Invalid input");
   }
@@ -49,6 +53,10 @@ rl.on("line", async (input) => {
 
 rl.on("close", () => {
   process.stdout.write(goodbyeMessage(userName));
+});
+
+rl.on("error", (error) => {
+  console.log(error);
 });
 
 export { entryPoint };
