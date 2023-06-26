@@ -1,31 +1,20 @@
 import { resolve, basename } from "path";
 import { createReadStream, createWriteStream } from "node:fs";
 import { unlink } from "node:fs/promises";
-import {
-  currentDirectoryMessage,
-  operationFailedMessage,
-} from "../constants/constants.js";
+import { pipeline } from "node:stream/promises";
+import { access, constants } from "node:fs/promises";
 
-export const move = (pathToFile, newDirPath) => {
+export const move = async (pathToFile, newDirPath) => {
   const fullFilePath = resolve(process.env.entry, pathToFile);
   const fileName = basename(fullFilePath);
 
   const fullNewFilePath = resolve(process.env.entry, newDirPath, fileName);
 
-  createReadStream(fullFilePath)
-    .on("close", async () => {
-      await unlink(fullFilePath);
-    })
-    .on("error", (error) => {
-      process.stdout.write(`${operationFailedMessage}: ${error.message}`);
-      process.stdout.write(currentDirectoryMessage(process.env.entry));
-    })
-    .pipe(createWriteStream(fullNewFilePath))
-    .on("close", () => {
-      process.stdout.write(currentDirectoryMessage(process.env.entry));
-    })
-    .on("error", (error) => {
-      process.stdout.write(`${operationFailedMessage}: ${error.message}`);
-      process.stdout.write(currentDirectoryMessage(process.env.entry));
-    });
+  await access(fullFilePath, constants.F_OK);
+  await pipeline(
+    createReadStream(fullFilePath, { encoding: "utf8" }),
+    createWriteStream(fullNewFilePath)
+  );
+
+  await unlink(fullFilePath);
 };

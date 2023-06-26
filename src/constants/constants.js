@@ -15,20 +15,21 @@ const commandsList = {
   exit: ".exit",
   ls: "ls",
   up: "up",
-  cd: "cd",
-  cat: "cat",
-  add: "add",
-  rn: "rn",
-  hash: "hash",
-  cp: "cp",
-  mv: "mv",
-  rm: "rm",
-  compress: "compress",
-  decompress: "decompress",
+  cd: "cd ",
+  cat: "cat ",
+  add: "add ",
+  rn: "rn ",
+  hash: "hash ",
+  cp: "cp ",
+  mv: "mv ",
+  rm: "rm ",
+  compress: "compress ",
+  decompress: "decompress ",
   os: "os --"
 };
 
 const operationFailedMessage = "Operation failed";
+const invalidInputErrorMessage = `${EOL}Invalid input${EOL}`
 
 export {
   welcomeMessage,
@@ -38,4 +39,5 @@ export {
   userNamePrefix,
   commandsList,
   operationFailedMessage,
+  invalidInputErrorMessage
 };

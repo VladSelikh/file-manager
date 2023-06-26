@@ -1,4 +1,5 @@
 import { EOL, homedir, userInfo, cpus } from "os";
+import { invalidInputErrorMessage } from "../constants/constants.js";
 
 export const getOSInfo = (parameter) => {
   switch (parameter) {
@@ -24,6 +25,6 @@ export const getOSInfo = (parameter) => {
       });
       break;
     default:
-      process.stdout.write(`${EOL}Invalid input${EOL}`);
+      process.stdout.write(invalidInputErrorMessage);
   }
 };
