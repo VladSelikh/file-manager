@@ -9,7 +9,7 @@ const defaultUserName = "Username";
 
 const userNamePrefix = "--username=";
 
-const commandsList = { exit: ".exit", ls: "ls", up: "up" };
+const commandsList = { exit: ".exit", ls: "ls", up: "up", cd: "cd" };
 
 const operationFailedMessage = "Operation failed";
 

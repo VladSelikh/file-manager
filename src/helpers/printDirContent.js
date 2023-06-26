@@ -1,12 +1,12 @@
 import { readdir } from "node:fs/promises";
 import { operationFailedMessage } from "../constants/constants.js";
 
-export const printDirContent = async (dirName) => {
+export const printDirContent = async () => {
   try {
     const directoriesList = [];
     const filesList = [];
 
-    (await readdir(dirName, { withFileTypes: true })).forEach((item) => {
+    (await readdir(process.env.entry, { withFileTypes: true })).forEach((item) => {
       (item.isDirectory() ? directoriesList : filesList).push({
         Name: item.name,
         Type: item.isDirectory() ? "directory" : "file",
@@ -30,6 +30,6 @@ export const printDirContent = async (dirName) => {
 
     console.table(sortedDirectoriesList.concat(sortedFilesList));
   } catch (e) {
-    process.stdin.write(`${operationFailedMessage}: ${e.message}`);
+    process.stdout.write(`${operationFailedMessage}: ${e.message}`);
   }
 };

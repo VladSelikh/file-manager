@@ -9,9 +9,10 @@ import {
 } from "./constants/constants.js";
 import { printDirContent } from "./helpers/printDirContent.js";
 import { goUp } from "./helpers/goUp.js";
+import { goToDirectory } from "./helpers/goToDirectory.js";
 
 let userName = defaultUserName;
-let entryPoint = homedir();
+process.env.entry = homedir();
 
 const argumentWithUserName = process.argv.find((item) =>
   item.startsWith(userNamePrefix)
@@ -38,16 +39,19 @@ rl.on("line", async (input) => {
       rl.close();
       process.exit();
     case commandsList.ls:
-      await printDirContent(entryPoint);
+      await printDirContent();
       break;
     case commandsList.up:
-      entryPoint = goUp(entryPoint);
+      goUp();
+      break;
+    case commandsList.cd:
+      await goToDirectory(input.replace(`${commandsList.cd} `, ""));
       break;
     default:
       process.stdout.write("Invalid input");
   }
   process.stdout.write(EOL);
-  process.stdout.write(`You currently in ${entryPoint}`);
+  process.stdout.write(`You currently in ${process.env.entry}`);
   process.stdout.write(EOL);
 });
 
@@ -58,5 +62,3 @@ rl.on("close", () => {
 rl.on("error", (error) => {
   console.log(error);
 });
-
-export { entryPoint };
