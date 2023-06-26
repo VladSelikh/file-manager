@@ -8,6 +8,7 @@ import {
   commandsList,
   currentDirectoryMessage,
   invalidInputErrorMessage,
+  operationFailedMessage,
 } from "./constants/constants.js";
 import { printDirContent } from "./helpers/printDirContent.js";
 import { goUp } from "./helpers/goUp.js";
@@ -99,7 +100,7 @@ rl.on("line", async (input) => {
         stdout.write(invalidInputErrorMessage);
     }
   } catch (e) {
-    stdout.write(e.message);
+    stdout.write(`${operationFailedMessage}: ${e.message}`);
   }
 
   if (commandSpecified !== commandsList.cat) {
