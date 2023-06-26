@@ -102,7 +102,9 @@ rl.on("line", async (input) => {
     stdout.write(e.message);
   }
 
-  stdout.write(currentDirectoryMessage(env.entry));
+  if (commandSpecified !== commandsList.cat) {
+    stdout.write(currentDirectoryMessage(process.env.entry));
+  }
 });
 
 rl.on("close", () => {

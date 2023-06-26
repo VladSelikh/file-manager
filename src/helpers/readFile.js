@@ -1,15 +1,22 @@
 import { resolve } from "path";
 import { createReadStream } from "node:fs";
-import { pipeline } from "node:stream/promises";
-import { access, constants } from "node:fs/promises";
+import {
+  currentDirectoryMessage,
+  operationFailedMessage,
+} from "../constants/constants.js";
 
-export const read = async (pathToFile) => {
+export const read = (pathToFile) => {
   const fileName = resolve(process.env.entry, pathToFile);
+  const stream = createReadStream(fileName, { encoding: "utf8" });
 
-  await access(fileName, constants.F_OK);
-  await pipeline(
-    createReadStream(fileName, { encoding: "utf8" }),
-    brotli,
-    process.stdout
-  );
+  stream
+    .on("data", (chunk) => {
+      process.stdout.write(chunk);
+    })
+    .on("close", () => {
+      process.stdout.write(currentDirectoryMessage(process.env.entry));
+    })
+    .on("error", (error) => {
+      process.stdout.write(`${operationFailedMessage}: ${error.message}`);
+    });
 };

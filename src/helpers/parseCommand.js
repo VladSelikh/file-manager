@@ -1,4 +1,7 @@
-import { commandsList, invalidInputErrorMessage } from "../constants/constants.js";
+import {
+  commandsList,
+  invalidInputErrorMessage,
+} from "../constants/constants.js";
 const { ls, up, exit, rn, cp, mv, compress, decompress } = commandsList;
 
 export const parseCommandString = (command, string) => {
@@ -9,13 +12,14 @@ export const parseCommandString = (command, string) => {
     const parametersPart = string.replace(command, "");
     let parameters;
 
-    if (string.includes('" "')) {
+    if (parametersPart.includes('" "')) {
       parameters = parametersPart
-        .split('"')
-        .filter((item) => !["", " "].includes(item));
+        .split('" "')
+        .map((item) => item.replace(/(^"|"$)/g, ""));
     } else {
       parameters = parametersPart.split(" ");
     }
+
     if (parameters.length === 2) {
       return parameters;
     }
