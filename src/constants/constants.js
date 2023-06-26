@@ -20,6 +20,9 @@ const commandsList = {
   add: "add",
   rn: "rn",
   hash: "hash",
+  cp: "cp",
+  mv: "mv",
+  rm: "rm",
 };
 
 const operationFailedMessage = "Operation failed";

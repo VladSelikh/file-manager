@@ -1,7 +1,7 @@
 {
   "name": "file-manager",
   "version": "1.0.0",
-  "description": "Simple file mamager on NodeJS",
+  "description": "Simple file manager on NodeJS",
   "type": "module",
   "main": "index.js",
   "scripts": {

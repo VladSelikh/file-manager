@@ -15,6 +15,9 @@ import { read } from "./helpers/readFile.js";
 import { create } from "./helpers/createFile.js";
 import { rename } from "./helpers/renameFile.js";
 import { createHash } from "./helpers/createHash.js";
+import { copy } from "./helpers/copyFile.js";
+import { move } from "./helpers/moveFile.js";
+import { remove } from "./helpers/deleteFile.js";
 
 let userName = defaultUserName;
 process.env.entry = homedir();
@@ -40,7 +43,7 @@ rl.on("line", async (input) => {
   );
 
   switch (commandSpecified) {
-    // ToDo: parse command line string, especially rn
+    // ToDo: parse command line string
     case commandsList.exit:
       rl.close();
       process.exit();
@@ -63,7 +66,16 @@ rl.on("line", async (input) => {
       await rename(...input.replace(`${commandSpecified} `, "").split(" "));
       break;
     case commandsList.hash:
-      await createHash(...input.replace(`${commandSpecified} `, "").split(" "));
+      await createHash(input.replace(`${commandSpecified} `, ""));
+      break;
+    case commandsList.cp:
+      copy(...input.replace(`${commandSpecified} `, "").split(" "));
+      break;
+    case commandsList.mv:
+      move(...input.replace(`${commandSpecified} `, "").split(" "));
+      break;
+    case commandsList.rm:
+      await remove(input.replace(`${commandSpecified} `, ""));
       break;
     default:
       process.stdout.write(`${EOL}Invalid input${EOL}`);
@@ -76,6 +88,7 @@ rl.on("line", async (input) => {
       commandsList.up,
       commandsList.add,
       commandsList.rn,
+      commandsList.rm,
       commandsList.hash,
     ].includes(commandSpecified)
   ) {
