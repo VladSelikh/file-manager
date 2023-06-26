@@ -14,6 +14,7 @@ import { goToDirectory } from "./helpers/goToDirectory.js";
 import { read } from "./helpers/readFile.js";
 import { create } from "./helpers/createFile.js";
 import { rename } from "./helpers/renameFile.js";
+import { createHash } from "./helpers/createHash.js";
 
 let userName = defaultUserName;
 process.env.entry = homedir();
@@ -61,6 +62,9 @@ rl.on("line", async (input) => {
     case commandsList.rn:
       await rename(...input.replace(`${commandSpecified} `, "").split(" "));
       break;
+    case commandsList.hash:
+      await createHash(...input.replace(`${commandSpecified} `, "").split(" "));
+      break;
     default:
       process.stdout.write(`${EOL}Invalid input${EOL}`);
   }
@@ -72,6 +76,7 @@ rl.on("line", async (input) => {
       commandsList.up,
       commandsList.add,
       commandsList.rn,
+      commandsList.hash,
     ].includes(commandSpecified)
   ) {
     process.stdout.write(currentDirectoryMessage(process.env.entry));
@@ -80,8 +85,4 @@ rl.on("line", async (input) => {
 
 rl.on("close", () => {
   process.stdout.write(goodbyeMessage(userName));
-});
-
-rl.on("error", (error) => {
-  process.stdout.write(error.message);
 });
